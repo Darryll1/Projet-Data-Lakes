@@ -1,0 +1,23 @@
+[
+  {
+    "id": "4523b5a3-076e-48c7-b43b-5b9703f7e726",
+    "capteur_id": 1,
+    "date_heure": "2025-06-13T16:08:00",
+    "unite": "zz",
+    "valeur": 0.0
+  },
+  {
+    "id": "fa04fb52-5dff-4c7a-993a-e94616666923",
+    "capteur_id": 1,
+    "date_heure": "2025-06-13T16:02:00",
+    "unite": "pl",
+    "valeur": 0.0
+  },
+  {
+    "id": "7727f17f-8bb1-4201-b335-16337d3f1f43",
+    "capteur_id": 1,
+    "date_heure": "2025-06-13T13:39:04.604000",
+    "unite": "Ug/m3",
+    "valeur": 110.5
+  }
+]
