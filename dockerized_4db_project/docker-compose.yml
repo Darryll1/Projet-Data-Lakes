@@ -1,0 +1,103 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    depends_on:
+      - postgres
+      - mongo
+      - cassandra
+      - neo4j
+      - minio
+    ports:
+      - "8000:8000"
+    environment:
+      - MINIO_ENDPOINT=minio
+      - MINIO_ACCESS_KEY=admin
+      - MINIO_SECRET_KEY=admin123
+    volumes:
+      - .:/app  # Pour accéder à export_to_datalake.py
+
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: smartcity
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      LANG: C  
+    ports:
+      - "5432:5432"
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  cassandra:
+    image: cassandra
+    ports:
+      - "9042:9042"
+
+  neo4j:
+    image: neo4j
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+
+  minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"   # API S3
+      - "9001:9001"   # Interface Web
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin123
+    volumes:
+      - minio_data:/data
+
+volumes:
+  minio_data:
+
+
+
+# version: '3.8'
+# services:
+#   app:
+#     build: .
+#     depends_on:
+#       - postgres
+#       - mongo
+#       - cassandra
+#       - neo4j
+#     ports:
+#       - "8000:8000"
+
+#   postgres:
+#     image: postgres:14
+#     environment:
+#       POSTGRES_DB: smartcity
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: password
+#     ports:
+#       - "5432:5432"
+
+#   mongo:
+#     image: mongo
+#     ports:
+#       - "27017:27017"
+
+#   cassandra:
+#     image: cassandra
+#     ports:
+#       - "9042:9042"
+
+#   neo4j:
+#     image: neo4j
+#     environment:
+#       - NEO4J_AUTH=neo4j/password
+#     ports:
+#       - "7474:7474"
+#       - "7687:7687"
