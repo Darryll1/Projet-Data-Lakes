@@ -1,5 +1,5 @@
 import time
-print("⏳ Attente que les bases de données démarrent...")
+print(" Attente que les bases de données démarrent...")
 time.sleep(15)
 
 # ===============================
@@ -61,10 +61,10 @@ try:
     """, (1, 110.5, 'Ug/m3', '2025-04-18 14:00:00'))
 
     pg_conn.commit()
-    print("✅ PostgreSQL : Donnée insérée avec intégrité + trigger activé.")
+    print("PostgreSQL : Donnée insérée avec intégrité + trigger activé.")
 except Exception as e:
     pg_conn.rollback()
-    print("❌ PostgreSQL Error:", e)
+    print("PostgreSQL Error:", e)
 finally:
     pg_cur.close()
     pg_conn.close()
@@ -84,7 +84,7 @@ doc = {
     "date_heure": "2025-04-18T14:00:00"
 }
 mongo_db.mesures.insert_one(doc)
-print("✅ MongoDB : Document inséré.")
+print("MongoDB : Document inséré.")
 
 # ===============================
 # 3. Cassandra (orientée colonnes)
@@ -97,7 +97,7 @@ from datetime import datetime
 import time
 import uuid
 
-print("⏳ Connexion à Cassandra...")
+print("Connexion à Cassandra...")
 
 MAX_ATTEMPTS = 20
 WAIT_SECONDS = 10
@@ -106,13 +106,13 @@ for i in range(MAX_ATTEMPTS):
     try:
         cluster = Cluster(["cassandra"])
         session = cluster.connect()
-        print("✅ Cassandra connecté.")
+        print("Cassandra connecté.")
         break
     except NoHostAvailable:
-        print(f"⏳ Cassandra pas encore prêt (tentative {i+1}/{MAX_ATTEMPTS}). Attente {WAIT_SECONDS}s...")
+        print(f"Cassandra pas encore prêt (tentative {i+1}/{MAX_ATTEMPTS}). Attente {WAIT_SECONDS}s...")
         time.sleep(WAIT_SECONDS)
 else:
-    raise Exception(f"❌ Cassandra n’a pas répondu après {MAX_ATTEMPTS} tentatives.")
+    raise Exception(f"Cassandra n’a pas répondu après {MAX_ATTEMPTS} tentatives.")
 
 # Création keyspace + table
 session.execute("""
@@ -135,7 +135,7 @@ session.execute("""
 session.execute("""
     CREATE INDEX IF NOT EXISTS mesures_capteur_id_idx ON mesures (capteur_id);
 """)
-print("✅ Cassandra : Index secondaire sur capteur_id créé.")
+print(" Cassandra : Index secondaire sur capteur_id créé.")
 
 # Insertion de données
 session.execute("""
@@ -143,7 +143,7 @@ session.execute("""
     VALUES (%s, %s, %s, %s, %s)
 """, (uuid.uuid4(), 1, 110.5, "Ug/m3", datetime.utcnow()))
 
-print("✅ Cassandra : Donnée insérée.")
+print("Cassandra : Donnée insérée.")
 
 # ===============================
 # 4. Neo4j (orientée graphes)
@@ -151,7 +151,7 @@ print("✅ Cassandra : Donnée insérée.")
 from neo4j import GraphDatabase, basic_auth
 import time
 
-print("⏳ Connexion à Neo4j...")
+print("Connexion à Neo4j...")
 
 neo4j_driver = None
 
@@ -160,13 +160,13 @@ for i in range(10):
         neo4j_driver = GraphDatabase.driver("bolt://neo4j:7687", auth=basic_auth("neo4j", "password"))
         with neo4j_driver.session() as session:
             session.run("RETURN 1")  # simple test
-        print("✅ Neo4j connecté.")
+        print("Neo4j connecté.")
         break
     except Exception as e:
-        print(f"⏳ Neo4j pas encore prêt (tentative {i+1}/10). Attente 5s...")
+        print(f"Neo4j pas encore prêt (tentative {i+1}/10). Attente 5s...")
         time.sleep(5)
 else:
-    raise Exception("❌ Neo4j n’a pas répondu après 10 tentatives.")
+    raise Exception("Neo4j n’a pas répondu après 10 tentatives.")
 
 def insert_mesure(tx, capteur_id, valeur, unite, date_heure):
     tx.run("""
@@ -177,4 +177,4 @@ def insert_mesure(tx, capteur_id, valeur, unite, date_heure):
 
 with neo4j_driver.session() as session:
     session.execute_write(insert_mesure, 1, 110.5, "Ug/m3", "2025-04-18T14:00:00")
-    print("✅ Neo4j : Donnée insérée avec relation.")
+    print("Neo4j : Donnée insérée avec relation.")
