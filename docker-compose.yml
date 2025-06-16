@@ -20,7 +20,7 @@ services:
 
   streamlit:
     build:
-      context: ./interface  # dossier contenant Dockerfile + Interface3.py
+      context: ./interface  # dossier contenant Dockerfile + Interface.py
     depends_on:
       - postgres
       - minio
@@ -31,7 +31,7 @@ services:
       - MINIO_ACCESS_KEY=admin
       - MINIO_SECRET_KEY=admin123
     volumes:
-      - ./interface:/app  # facultatif, pour dev en direct si tu modifies Interface3.py
+      - ./interface:/app  
 
   postgres:
     image: postgres:14
