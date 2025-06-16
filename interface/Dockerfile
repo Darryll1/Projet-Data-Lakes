@@ -12,4 +12,4 @@ COPY . /app
 RUN pip install streamlit pandas psycopg2-binary minio boto3 pymongo cassandra-driver neo4j sqlalchemy
 
 # Démarrer Streamlit
-CMD ["streamlit", "run", "Interface3.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "Interface.py", "--server.port=8501", "--server.address=0.0.0.0"]
