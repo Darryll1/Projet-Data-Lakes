@@ -67,3 +67,4 @@ L’interface Streamlit n’est pas démarrée automatiquement par Docker. Tu do
  python interface/Interface.py
  L’interface s’ouvrira à l’adresse suivante :
 http://localhost:8501
+Le datalake se trouve sur http://localhost:9001
